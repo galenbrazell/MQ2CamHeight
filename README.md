@@ -8,12 +8,22 @@ zoom out or mouselook, the view can be centered on a point **above** them — an
 
 EverQuest has no built-in setting for this: stock "camera height" (Alt+mouse-wheel)
 raises the *camera*, but the character stays centered. MQ2CamHeight shifts the
-*look-at point* instead, which the client exposes no UI for.
+*look-at point* instead, which the client exposes no control for.
 
-**Download:** a prebuilt DLL is on the
-[Releases](https://github.com/galenbrazell/MQ2CamHeight/releases/latest) page
-(compiled for RoF2-emu MacroQuest builds), or build from source — see
-[Install / Build](#install--build).
+## Install
+
+1. Download **`MQ2CamHeight.dll`** from the
+   [latest release](https://github.com/galenbrazell/MQ2CamHeight/releases/latest).
+2. Drop it into your MacroQuest **`plugins`** folder (next to the other `MQ2*.dll`).
+3. In game, run `/plugin MQ2CamHeight load` — or add `MQ2CamHeight=1` under
+   `[Plugins]` in `MacroQuest.ini` to load it automatically.
+
+That's it. Then `/camheight on` (or just press a bound key) and tune to taste.
+
+**Requires the RoF2 EMU build of MacroQuest** — the official
+[emu-rof2 release](https://github.com/macroquest/macroquest/releases/tag/rel-emu-rof2)
+(v3.1.4.7 or a compatible RoF2-emu build). It will **not** load into Live/retail
+MacroQuest (different client, different offsets).
 
 ## Commands
 
@@ -37,7 +47,7 @@ character.
 
 ## Keybinds
 
-Three MacroQuest keybinds are registered; bind them in game with `/bind`:
+Bind raise/lower (and an optional toggle) to keys with `/bind`:
 
 ```
 /bind CamHeightUp Page_Up
@@ -64,16 +74,19 @@ OpenRoom=30
 Smooth=0.15
 ```
 
-## Compatibility
+## How it works
 
-**RoF2 EMU client only.** Built against MacroQuest's **`emu`** branch; the camera
-offsets target the RoF2 EMU client. Do **not** load it into a Live/retail
-MacroQuest — the offsets differ and it will crash.
+The focal lever is the player's eye/view height (`ViewHeight`) — the point the
+third-person camera looks at; raising it lifts the focal point so the character
+sits lower on screen. The low-ceiling auto-lower reads the client's own
+`CeilingHeightAtCurrLocation`, computes `headroom = ceiling − playerZ`, and smoothly
+scales the offset toward 0 as headroom shrinks (and back up as it opens), so the
+plugin gets out of the way indoors instead of amplifying the ceiling-snap.
 
-## Install / Build
+## Building from source
 
-This repo *is* the plugin folder, so it drops straight into a MacroQuest source
-tree set up for the RoF2 EMU client (the `emu` branch, built with VS2022 / v143):
+For developers. This repo *is* the plugin folder — clone it into a MacroQuest
+source tree set up for the RoF2 EMU client (the `emu` branch):
 
 ```
 cd <MacroQuest>/plugins
@@ -81,24 +94,8 @@ git clone https://github.com/galenbrazell/MQ2CamHeight.git
 ```
 
 Configure the MacroQuest build with `MQ_BUILD_CUSTOM_PLUGINS=ON` and build (emu =
-`Release` / `Win32`). The DLL lands in `build/bin/release/plugins/MQ2CamHeight.dll`.
-Copy it into your MacroQuest install's plugin folder if needed, then in game:
-
-```
-/plugin MQ2CamHeight load
-```
-
-…or add `MQ2CamHeight=1` under `[Plugins]` in `MacroQuest.ini` to autoload.
-
-## How it works
-
-The focal lever is the player's eye/view height (`ViewHeight`): the point the
-third-person camera looks at. Each pulse the plugin captures the game's current
-`ViewHeight` and writes `baseline + offset`, so it tracks the natural value (and
-restores it when disabled). The low-ceiling auto-lower reads the client's own
-`CeilingHeightAtCurrLocation`, computes `headroom = ceiling − playerZ`, and smoothly
-scales the offset toward 0 as headroom shrinks (and back up as it opens), so the
-plugin gets out of the way indoors instead of amplifying the ceiling-snap.
+`Release` / `Win32`); the DLL lands in `build/bin/release/plugins/MQ2CamHeight.dll`.
+See MacroQuest's [build docs](https://docs.macroquest.org/main/building/).
 
 ## License
 
