@@ -10,6 +10,11 @@ EverQuest has no built-in setting for this: stock "camera height" (Alt+mouse-whe
 raises the *camera*, but the character stays centered. MQ2CamHeight shifts the
 *look-at point* instead, which the client exposes no UI for.
 
+**Download:** a prebuilt DLL is on the
+[Releases](https://github.com/galenbrazell/MQ2CamHeight/releases/latest) page
+(compiled for RoF2-emu MacroQuest builds), or build from source — see
+[Install / Build](#install--build).
+
 ## Commands
 
 `/camheight` with no argument (or `status`) shows the current state.
