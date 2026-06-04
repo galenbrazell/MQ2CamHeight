@@ -1,0 +1,48 @@
+# Build output (MacroQuest builds into <tree>/build and build/bin/Release)
+build/
+bin/
+out/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+
+# Visual Studio / CMake local junk
+.vs/
+CMakeCache.txt
+CMakeFiles/
+CMakeSettings.json
+*.user
+*.suo
+
+# Vendored MacroQuest source tree (see SETUP.md) — do not commit upstream code.
+# Remove/adjust if you intentionally vendor a pinned MQ tree.
+/macroquest/
+/MacroQuest/
+/mq/
+/vendor/
+
+# Packaged drop-in build artifact + any staging
+*.zip
+/_dist/
+
+# Claude Code session / memory data — never publish
+/.claude/
+
+# Local-only working files (project history + bespoke build-from-source tooling) —
+# not part of the public plugin repo. The public repo is just README + LICENSE +
+# the MQ2*/ plugin folders.
+/HANDOFF.md
+/PHASE2 DETOUR.md
+/SETUP.md
+/USING-MACROQUEST.md
+/build.ps1
+/sync-plugin.ps1
+/CMakeUserPresets.template.json
+/MQ2PitchLock/
+
+# Visual Studio extras (match the standard VS gitignore template)
+*.aps
+*.sdf
